@@ -1,0 +1,126 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url = env("DATABASE_URL")
+}
+
+model Archive {
+  id Int @id @default(autoincrement())
+  path String @unique
+  images Image[]
+}
+
+model Album {
+  id Int @id @default(autoincrement())
+  name String
+  folderId Int
+  images Image[]
+}
+
+model Folder {
+  id Int @id @default(autoincrement())
+  name String
+  folderId Int
+  children Folder[] @relation("Folders")
+  parent Folder? @relation("Folders", fields: [folderId], references: [id])
+}
+
+model Image {
+  id Int @id @default(autoincrement())
+  filename String
+  archiveId Int
+  albumId Int?
+  modificationDate DateTime
+  fileSize Int
+  uniqueHash String
+  // Depends on filesystem-based albums as a concept
+  //manualOrder Int?
+  archive Archive @relation(fields: [archiveId], references: [id], onDelete: Restrict)
+  metadata ImageMetadata?
+  info ImageInfo?
+  tags TagsOnImages[]
+  album Album? @relation(fields: [albumId], references: [id], onDelete: Restrict)
+}
+
+model ImageRating {
+  imageId Int @id
+  rating Int @default(value: 0)
+  pickLabelId Int
+  pickLabel PickLabelType @relation(fields: [pickLabelId], references: [id])
+  colorLabelId Int
+  colorLabel ColorLabelType @relation(fields: [colorLabelId], references: [id])
+}
+
+model PickLabelType {
+  id Int @id @default(autoincrement())
+  pickLabel String @unique
+  ratings ImageRating[]
+}
+
+model ColorLabelType {
+  id Int @id @default(autoincrement())
+  colorLabel String @unique
+  ratings ImageRating[]
+}
+
+// From digiKam 7.5.0
+model ImageMetadata {
+  imageId Int @id
+  make String?
+  model String?
+  lens String?
+  aperture Float?
+  focalLength Float?
+  focalLength35 Float?
+  exposureTime Float?
+  exposureProgram Int?
+  exposureMode Int?
+  sensitivity Int?
+  flash Int?
+  whiteBalance Int?
+  whiteBalanceColorTemperature Int?
+  meteringMode Int?
+  subjectDistance Float?
+  subjectDistanceCategory Int?
+  image Image @relation(fields: [imageId], references: [id], onDelete: Cascade)
+}
+
+// From digiKam 7.5.0
+model ImageInfo {
+  imageId Int @id
+  creationDate DateTime
+  digitizationDate DateTime
+  orientation Int
+  width Int
+  height Int
+  // Could technically be a lookup table with JPEG, whatever, whatever
+  format String
+  colorDepth Int
+  colorModel Int
+  image Image @relation(fields: [imageId], references: [id], onDelete: Cascade)
+}
+
+// https://www.prisma.io/docs/concepts/components/prisma-schema/relations/many-to-many-relations#explicit-many-to-many-relations
+model TagsOnImages {
+  @@unique([imageId, tagId])
+  imageId Int
+  tagId Int
+  image Image @relation(fields: [imageId], references: [id], onDelete: Restrict)
+  tag Tag @relation(fields: [tagId], references: [id], onDelete: Restrict)
+}
+
+model Tag {
+  @@unique([parentId, name])
+  id Int @id @default(autoincrement())
+  parentId Int @default(0)
+  name String
+  images TagsOnImages[]
+  children Tag[] @relation("TagTrees")
+  parent Tag? @relation("TagTrees", fields: [parentId], references: [id])
+}

@@ -1,0 +1,270 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "./generated/import"
+  previewFeatures = ["views"]
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DIGIKAM_DB_URL")
+}
+
+model Test {
+  iso8601 DateTime?
+  rfc2822 DateTime?
+  rfc3339 DateTime?
+  unix DateTime @id
+}
+
+model AlbumRoots {
+  id              Int     @id @default(autoincrement())
+  label           String?
+  status          Int
+  type            Int
+  identifier      String?
+  specificPath    String?
+  caseSensitivity Int?
+
+  @@unique([identifier, specificPath], map: "sqlite_autoindex_AlbumRoots_1")
+}
+
+model Albums {
+  id               Int       @id @default(autoincrement())
+  albumRoot        Int
+  relativePath     String
+  date             DateTime?
+  caption          String?
+  collection       String?
+  icon             Int?
+  modificationDate DateTime?
+
+  @@unique([albumRoot, relativePath], map: "sqlite_autoindex_Albums_1")
+}
+
+model DownloadHistory {
+  id         Int       @id @default(autoincrement())
+  identifier String?
+  filename   String?
+  filesize   Int?
+  filedate   DateTime?
+
+  @@unique([identifier, filename, filesize, filedate], map: "sqlite_autoindex_DownloadHistory_1")
+}
+
+model ImageComments {
+  id       Int       @id @default(autoincrement())
+  imageid  Int?
+  type     Int?
+  language String?
+  author   String?
+  date     DateTime?
+  comment  String?
+
+  @@unique([imageid, type, language, author], map: "sqlite_autoindex_ImageComments_1")
+  @@index([imageid], map: "comments_imageid_index")
+}
+
+model ImageCopyright {
+  id         Int     @id @default(autoincrement())
+  imageid    Int?
+  property   String?
+  value      String?
+  extraValue String?
+
+  @@unique([imageid, property, value, extraValue], map: "sqlite_autoindex_ImageCopyright_1")
+  @@index([imageid], map: "copyright_imageid_index")
+}
+
+model ImageHistory {
+  imageid Int     @id @default(autoincrement())
+  uuid    String?
+  history String?
+
+  @@index([uuid], map: "uuid_index")
+}
+
+// With casts to unix epoch
+view ImageInfo {
+  imageid          Int       @id
+  rating           Int?
+  creationDate     DateTime?
+  digitizationDate DateTime?
+  orientation      Int?
+  width            Int?
+  height           Int?
+  format           String?
+  colorDepth       Int?
+  colorModel       Int?
+  image Images @relation(fields: [imageid], references: [id])
+}
+
+model ImageInformation {
+  imageid          Int       @id
+  rating           Int?
+  creationDate     DateTime?
+  digitizationDate DateTime?
+  orientation      Int?
+  width            Int?
+  height           Int?
+  format           String?
+  colorDepth       Int?
+  colorModel       Int?
+  image Images @relation(fields: [imageid], references: [id])
+
+  @@index([creationDate], map: "creationdate_index")
+}
+
+model ImageMetadata {
+  imageid                      Int     @id
+  make                         String?
+  model                        String?
+  lens                         String?
+  aperture                     Float?
+  focalLength                  Float?
+  focalLength35                Float?
+  exposureTime                 Float?
+  exposureProgram              Int?
+  exposureMode                 Int?
+  sensitivity                  Int?
+  flash                        Int?
+  whiteBalance                 Int?
+  whiteBalanceColorTemperature Int?
+  meteringMode                 Int?
+  subjectDistance              Float?
+  subjectDistanceCategory      Int?
+  image Images @relation(fields: [imageid], references: [id])
+}
+
+model ImagePositions {
+  imageid         Int     @id @default(autoincrement())
+  latitude        String?
+  latitudeNumber  Float?
+  longitude       String?
+  longitudeNumber Float?
+  altitude        Float?
+  orientation     Float?
+  tilt            Float?
+  roll            Float?
+  accuracy        Float?
+  description     String?
+}
+
+model ImageProperties {
+  imageid  Int
+  property String
+  value    String
+
+  @@unique([imageid, property], map: "sqlite_autoindex_ImageProperties_1")
+}
+
+model ImageTags {
+  imageid Int
+  tagid   Int
+
+  image Images @relation(fields: [imageid], references: [id], onDelete: Restrict)
+  tag Tags @relation(fields: [tagid], references: [id], onDelete: Restrict)
+
+  @@unique([imageid, tagid], map: "sqlite_autoindex_ImageTags_1")
+  @@index([imageid], map: "tag_id_index")
+  @@index([tagid], map: "tag_index")
+}
+
+model Images {
+  id               Int       @id @default(autoincrement())
+  album            Int?
+  name             String
+  status           Int
+  category         Int
+  modificationDate DateTime?
+  fileSize         Int?
+  uniqueHash       String?
+  manualOrder      Int?
+  metadata ImageMetadata?
+  info ImageInformation?
+  viewInfo ImageInfo?
+  tags ImageTags[]
+
+  @@unique([album, name], map: "sqlite_autoindex_Images_1")
+  @@index([name], map: "image_name_index")
+  @@index([uniqueHash], map: "hash_index")
+  @@index([album], map: "dir_index")
+}
+
+model Searches {
+  id    Int    @id @default(autoincrement())
+  type  Int?
+  name  String
+  query String
+}
+
+model Settings {
+  keyword String  @unique(map: "sqlite_autoindex_Settings_1")
+  value   String?
+}
+
+model Tags {
+  id      Int     @id @default(autoincrement())
+  pid     Int?
+  name    String
+  icon    Int?
+  iconkde String?
+  images ImageTags[]
+  children Tags[] @relation("TagTrees")
+  parent Tags? @relation("TagTrees", fields: [pid], references: [id])
+
+  @@unique([name, pid], map: "sqlite_autoindex_Tags_1")
+}
+
+model TagsTree {
+  id  Int
+  pid Int
+
+  @@unique([id, pid], map: "sqlite_autoindex_TagsTree_1")
+}
+
+model VideoMetadata {
+  imageid          Int     @id @default(autoincrement())
+  aspectRatio      String?
+  audioBitRate     String?
+  audioChannelType String?
+  audioCompressor  String?
+  duration         String?
+  frameRate        String?
+  exposureProgram  Int?
+  videoCodec       String?
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
+model ImageRelations {
+  subject Int?
+  object  Int?
+  type    Int?
+
+  @@unique([subject, object, type], map: "sqlite_autoindex_ImageRelations_1")
+  @@index([object], map: "object_relations_index")
+  @@index([subject], map: "subject_relations_index")
+  @@ignore
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
+model ImageTagProperties {
+  imageid  Int?
+  tagid    Int?
+  property String?
+  value    String?
+
+  @@index([tagid], map: "imagetagproperties_tagid_index")
+  @@index([imageid], map: "imagetagproperties_imageid_index")
+  @@index([imageid, tagid], map: "imagetagproperties_index")
+  @@ignore
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
+model TagProperties {
+  tagid    Int?
+  property String?
+  value    String?
+
+  @@index([tagid], map: "tagproperties_index")
+  @@ignore
+}
