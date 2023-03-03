@@ -9,13 +9,6 @@ datasource db {
   url      = env("DIGIKAM_DB_URL")
 }
 
-model Test {
-  iso8601 DateTime?
-  rfc2822 DateTime?
-  rfc3339 DateTime?
-  unix DateTime @id
-}
-
 model AlbumRoots {
   id              Int     @id @default(autoincrement())
   label           String?
@@ -109,7 +102,7 @@ model ImageInformation {
   format           String?
   colorDepth       Int?
   colorModel       Int?
-  image Images @relation(fields: [imageid], references: [id])
+  //image Images @relation(fields: [imageid], references: [id])
 
   @@index([creationDate], map: "creationdate_index")
 }
@@ -175,12 +168,15 @@ model Images {
   name             String
   status           Int
   category         Int
-  modificationDate DateTime?
+  //modificationDate DateTime?
+  // 'Conversion failed: input contains invalid characters'
   fileSize         Int?
   uniqueHash       String?
   manualOrder      Int?
   metadata ImageMetadata?
-  info ImageInformation?
+  // Includes unparsable DateTime
+  // 'Conversion failed: input contains invalid characters'
+  //info ImageInformation?
   viewInfo ImageInfo?
   tags ImageTags[]
 
