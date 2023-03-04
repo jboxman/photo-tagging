@@ -8,7 +8,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "db:migrate": "prisma migrate dev",
     "db:generate": "prisma generate",
-    "db:delete": "rimraf -- prisma/migrations/* prisma/db/*"
+    "db:delete": "rimraf -- prisma/migrations/* prisma/db/*",
+    "db:test:push": "DATABASE_URL='file:./db/test.db' prisma db push --force-reset --skip-generate"
   },
   "dependencies": {
     "@prisma/client": "^4.10.1",
