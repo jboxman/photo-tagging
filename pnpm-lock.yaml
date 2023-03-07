@@ -39,6 +39,7 @@ importers:
     specifiers:
       '@babel/core': ^7.21.0
       '@patternfly/react-core': ^4.276.6
+      '@patternfly/react-icons': ^4.93.6
       '@patternfly/react-table': ^4.112.39
       '@storybook/addon-actions': ^6.5.16
       '@storybook/addon-essentials': ^6.5.16
@@ -59,6 +60,7 @@ importers:
       webpack: ^5.75.0
     dependencies:
       '@patternfly/react-core': 4.276.6_biqbaboplfbrettd7655fr4n2y
+      '@patternfly/react-icons': 4.93.6_biqbaboplfbrettd7655fr4n2y
       '@patternfly/react-table': 4.112.39_biqbaboplfbrettd7655fr4n2y
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
