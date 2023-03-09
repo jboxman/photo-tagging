@@ -4,6 +4,7 @@ import '@patternfly/react-core/dist/styles/base.css';
 
 import { TreeView } from '@patternfly/react-core';
 
+// https://www.patternfly.org/v4/components/tree-view
 export class CheckboxTreeView extends React.Component {
   constructor(props) {
     super(props);
@@ -231,9 +232,6 @@ export class CheckboxTreeView extends React.Component {
       <TreeView
         data={mapped}
         onCheck={this.onCheck}
-        onSelect={(e, item, parentItem) => {
-          console.log(e);
-        }}
         defaultAllExpanded
         hasCheck
         hasGuides
