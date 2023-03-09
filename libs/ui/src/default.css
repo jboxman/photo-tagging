@@ -1,3 +1,26 @@
+.sizing {
+  height: 400px;
+  width: 300px;
+}
+
 .smaller {
   font-size: 80%;
+}
+
+/* Try to add a scroll bar for tags */
+.scroll {
+  width: 250px;
+  height: 300px;
+  overflow-y: auto;
+  padding-right: 5px;
+}
+
+.scroll > div {
+  min-width: 0;
+}
+
+.scroll > * {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
