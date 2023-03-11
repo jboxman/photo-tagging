@@ -5,44 +5,13 @@ import PropTypes from 'prop-types';
 import '@patternfly/react-core/dist/styles/base.css';
 import './default.css';
 
-import { Flex, FlexItem, Title } from '@patternfly/react-core';
-
-import TagActions from './modals/tags/TagActions';
-import TagForm from './modals/tags/TagForm';
-import TagTreeView from './modals/tags/TagTreeView';
+import TagModalLayout from './modals/tags/TagModalLayout';
 
 // fa-plus-circle
 // fa-minus
 // fa-plus
 
-const Template = (args) => {
-  return (
-    <>
-      <Flex
-        direction={{ default: 'row' }}
-        spaceItems={{ default: 'spaceItemsNone' }}
-        flexWrap={{ default: 'nowrap' }}
-        alignItems={{ default: 'alignItemsStretch' }}
-      >
-        <FlexItem>
-          <Title headingLevel="h1">Tags</Title>
-          <Flex
-            direction={{ default: 'column' }}
-            spaceItems={{ default: 'spaceItemsNone' }}
-            flexWrap={{ default: 'nowrap' }}
-          >
-            <FlexItem className="scroll">
-              <TagTreeView {...args} />
-            </FlexItem>
-          </Flex>
-        </FlexItem>
-        <FlexItem>
-          <TagForm />
-        </FlexItem>
-      </Flex>
-    </>
-  );
-};
+const Template = (args) => <TagModalLayout {...args} />;
 
 export default {
   title: 'Tag Manager',

@@ -3,21 +3,18 @@ import PropTypes from 'prop-types';
 
 import { Button, Form, ActionGroup } from '@patternfly/react-core';
 
-const TagForm = ({ onCreate, onEdit, onDelete }) => {
+const TagConfirm = ({ onDelete, onCancel }) => {
   return (
     <Form>
       <ActionGroup>
-        <Button variant="link" onClick={onCreate}>
-          Create
-        </Button>
-        <Button variant="link" onClick={onEdit}>
-          Edit
-        </Button>
         <Button variant="link" onClick={onDelete}>
           Delete
+        </Button>
+        <Button variant="link" onClick={onCancel}>
+          Cancel
         </Button>
       </ActionGroup>
     </Form>
   );
 };
-export default TagForm;
+export default TagConfirm;

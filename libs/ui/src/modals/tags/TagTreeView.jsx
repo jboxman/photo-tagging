@@ -4,19 +4,8 @@ import PropTypes from 'prop-types';
 
 import { TreeView } from '@patternfly/react-core';
 
-const TagTreeView = () => {
-  const [data, setData] = useState(null);
-  const [activeItems, setActiveItems] = useState([]);
-
-  useEffect(function () {
-    (async () => {
-      // https://dev.to/thatamymac/dynamic-imports-of-json-ipl
-      const data = await import('../../fixtures/tag-tree.json').then(
-        (module) => module.default
-      );
-      setData(data);
-    })();
-  }, []);
+const TagTreeView = ({ data, activeItems = [], onSelect }) => {
+  //const [activeItems, setActiveItems] = useState([]);
 
   return (
     <>
@@ -27,10 +16,7 @@ const TagTreeView = () => {
           hasGuides
           hasSelectableNodes
           activeItems={activeItems}
-          onSelect={(e, item, parentItem) => {
-            if (activeItems.includes(item)) setActiveItems([]);
-            if (!activeItems.includes(item)) setActiveItems([item]);
-          }}
+          onSelect={onSelect}
           className="smaller"
         />
       )}
