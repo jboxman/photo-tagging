@@ -2,9 +2,6 @@ import React from 'react';
 import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 
-import '@patternfly/react-core/dist/styles/base.css';
-import './default.css';
-
 import TagModalLayout from './modals/tags/TagModalLayout';
 
 // fa-plus-circle
