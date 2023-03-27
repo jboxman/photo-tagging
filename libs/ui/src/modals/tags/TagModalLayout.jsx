@@ -48,6 +48,7 @@ const TagModalLayout = ({ formProps = { type: formTypes.choice } }) => {
     if (formType == formTypes.choice) {
       return (
         <TagActions
+          activeSelection={activeItems.length > 0 ? true : false}
           onCreate={createHandleClick(formTypes.create)}
           onEdit={createHandleClick(formTypes.edit)}
           onDelete={createHandleClick(formTypes.delete)}
@@ -60,6 +61,7 @@ const TagModalLayout = ({ formProps = { type: formTypes.choice } }) => {
     return (
       <TagForm
         formType={formType}
+        activeItem={activeItems[0]}
         onCancel={createHandleClick(formTypes.choice)}
       />
     );

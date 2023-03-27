@@ -14,14 +14,25 @@ import {
 const upperFirst = (str) =>
   `${str.slice(0, 1).toLocaleUpperCase()}${str.slice(1)}`;
 
-const TagForm = ({ formType = '', parentTagName = '', onSave, onCancel }) => {
-  const [tagName, setTagName] = useState('');
+const TagForm = ({
+  formType = '',
+  activeItem = {},
+  parentTagName = '',
+  onSave,
+  onCancel,
+}) => {
+  const [tagName, setTagName] = useState(activeItem.name || '');
   const [isRootTag, setIsRootTag] = useState(false);
-
+  console.log(activeItem);
   return (
     <Form>
       <FormGroup label="Tag" isRequired>
-        <TextInput isRequired type="text" />
+        <TextInput
+          isRequired
+          type="text"
+          defaultValue={tagName}
+          onChange={(v) => setTagName(v)}
+        />
       </FormGroup>
       <FormGroup>
         {formType == 'create' ? (
