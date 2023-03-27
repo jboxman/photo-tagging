@@ -53,6 +53,7 @@ importers:
       '@types/react-dom': ^18.0.10
       '@vitejs/plugin-react': ^3.1.0
       babel-loader: ^8.3.0
+      prop-types: ^15.8.1
       react: ^18.2.0
       react-dom: ^18.2.0
       react-redux: ^8.0.5
@@ -65,6 +66,7 @@ importers:
       '@patternfly/react-icons': 4.93.6_biqbaboplfbrettd7655fr4n2y
       '@patternfly/react-table': 4.112.39_biqbaboplfbrettd7655fr4n2y
       '@reduxjs/toolkit': 1.9.3_k4ae6lp43ej6mezo3ztvx6pykq
+      prop-types: 15.8.1
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
       react-redux: 8.0.5_3xleytyzprlgycb2ded54tx72i
