@@ -1,5 +1,6 @@
 import React from 'react';
 import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import { Flex, FlexItem, Title } from '@patternfly/react-core';
@@ -17,14 +18,20 @@ const formTypes = {
   choice: 'choice',
   create: 'create',
   edit: 'edit',
-  delete: 'delete'
+  delete: 'delete',
 };
 
-const TagModalLayout = ({ formProps = { type: formTypes.choice } }) => {
+const TagModalLayout = ({
+  tags = [],
+  formProps = { type: formTypes.choice },
+}) => {
   const [activeItems, setActiveItems] = useState([]);
   const [formType, setFormType] = useState(formProps.type);
-  const [data, setData] = useState(null);
+  //const [data, setData] = useState(null);
 
+  const data = useSelector((state) => state.tags.tags);
+
+  /*
   useEffect(function () {
     (async () => {
       // https://dev.to/thatamymac/dynamic-imports-of-json-ipl
@@ -34,6 +41,7 @@ const TagModalLayout = ({ formProps = { type: formTypes.choice } }) => {
       setData(data);
     })();
   }, []);
+  */
 
   const onSelect = (e, item, parentItem) => {
     if (activeItems.includes(item)) setActiveItems([]);

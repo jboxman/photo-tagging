@@ -1,3 +1,5 @@
 import { combineReducers } from '@reduxjs/toolkit';
 
-export const rootReducer = combineReducers({});
+import tags from './tagsSlice';
+
+export const rootReducer = combineReducers({ tags });
