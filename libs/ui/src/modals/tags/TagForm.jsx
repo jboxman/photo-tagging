@@ -1,6 +1,7 @@
 import React from 'react';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { useForm, Controller } from 'react-hook-form';
 
 import {
   Button,
@@ -21,17 +22,24 @@ const TagForm = ({
   onSave,
   onCancel,
 }) => {
-  const [tagName, setTagName] = useState(activeItem.name || '');
-  const [isRootTag, setIsRootTag] = useState(false);
+  const { control, handleSubmit } = useForm({
+    defaultValues: {
+      tagName: activeItem.name || '',
+      noparent: false,
+    },
+  });
+  const onSubmit = (data) => console.log(data);
+
   console.log(activeItem);
   return (
-    <Form>
+    <Form onSubmit={handleSubmit(onSubmit)}>
       <FormGroup label="Tag" isRequired>
-        <TextInput
-          isRequired
-          type="text"
-          defaultValue={tagName}
-          onChange={(v) => setTagName(v)}
+        <Controller
+          name="tagName"
+          control={control}
+          render={({ field }) => (
+            <TextInput {...field} id="any" isRequired type="text" />
+          )}
         />
       </FormGroup>
       <FormGroup>
@@ -46,7 +54,9 @@ const TagForm = ({
         ) : null}
       </FormGroup>
       <ActionGroup>
-        <Button variant="primary">{upperFirst(formType)}</Button>
+        <Button type="submit" variant="primary">
+          {upperFirst(formType)}
+        </Button>
         <Button variant="link" onClick={onCancel}>
           Cancel
         </Button>
