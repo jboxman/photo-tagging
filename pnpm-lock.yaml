@@ -56,6 +56,7 @@ importers:
       prop-types: ^15.8.1
       react: ^18.2.0
       react-dom: ^18.2.0
+      react-hook-form: ^7.43.9
       react-redux: ^8.0.5
       require-from-string: ^2.0.2
       typescript: ^4.9.5
@@ -69,6 +70,7 @@ importers:
       prop-types: 15.8.1
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
+      react-hook-form: 7.43.9_react@18.2.0
       react-redux: 8.0.5_3xleytyzprlgycb2ded54tx72i
       require-from-string: 2.0.2
     devDependencies:
@@ -9984,6 +9986,15 @@ packages:
       react-dom: 18.2.0_react@18.2.0
       react-is: 17.0.2
     dev: true
+
+  /react-hook-form/7.43.9_react@18.2.0:
+    resolution: {integrity: sha512-AUDN3Pz2NSeoxQ7Hs6OhQhDr6gtF9YRuutGDwPQqhSUAHJSgGl2VeY3qN19MG0SucpjgDiuMJ4iC5T5uB+eaNQ==}
+    engines: {node: '>=12.22.0'}
+    peerDependencies:
+      react: ^16.8.0 || ^17 || ^18
+    dependencies:
+      react: 18.2.0
+    dev: false
 
   /react-inspector/5.1.1_react@18.2.0:
     resolution: {integrity: sha512-GURDaYzoLbW8pMGXwYPDBIv6nqei4kK7LPRZ9q9HCZF54wqXz/dnylBp/kfE9XmekBhHvLDdcYeyIwSrvtOiWg==}
