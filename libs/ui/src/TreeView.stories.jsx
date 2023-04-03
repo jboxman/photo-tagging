@@ -1,5 +1,4 @@
 import React from 'react';
-import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Provider, useDispatch } from 'react-redux';
 
@@ -26,6 +25,9 @@ const Template = (args) => <TagModalLayout {...args} />;
 export default {
   title: 'Tag Manager',
   component: Template,
+  parameters: {
+    layout: 'centered',
+  },
   decorators: [
     (story) => (
       <Provider store={store}>
@@ -34,12 +36,6 @@ export default {
     ),
   ],
 };
-
-/*
-          <EmptyState>
-            <EmptyStateBody>This should be a form.</EmptyStateBody>
-          </EmptyState>
-*/
 
 export const Me = Template.bind({});
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
