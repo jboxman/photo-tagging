@@ -13,7 +13,7 @@ const TagForm = ({ activeSelection = false, onCreate, onEdit, onDelete }) => {
         <Button variant="link" onClick={onEdit} isDisabled={!activeSelection}>
           Edit
         </Button>
-        <Button variant="link" onClick={onDelete}>
+        <Button variant="link" onClick={onDelete} isDisabled={!activeSelection}>
           Delete
         </Button>
       </ActionGroup>

@@ -9,23 +9,15 @@ import {
   FormGroup,
   TextInput,
   ActionGroup,
-  Checkbox,
 } from '@patternfly/react-core';
 
 const upperFirst = (str) =>
   `${str.slice(0, 1).toLocaleUpperCase()}${str.slice(1)}`;
 
-const TagForm = ({
-  formType = '',
-  activeItem = {},
-  parentTagName = '',
-  onSave,
-  onCancel,
-}) => {
+const TagForm = ({ formType = '', activeItem = {}, onSave, onCancel }) => {
   const { control, handleSubmit } = useForm({
     defaultValues: {
       tagName: activeItem.name || '',
-      noparent: false,
     },
   });
   const onSubmit = (data) => console.log(data);
@@ -41,17 +33,6 @@ const TagForm = ({
             <TextInput {...field} id="any" isRequired type="text" />
           )}
         />
-      </FormGroup>
-      <FormGroup>
-        {formType == 'create' ? (
-          <Checkbox
-            label="Root"
-            id="root_parent"
-            name="no_parent"
-            isChecked={isRootTag}
-            onChange={(v) => setIsRootTag(v)}
-          />
-        ) : null}
       </FormGroup>
       <ActionGroup>
         <Button type="submit" variant="primary">

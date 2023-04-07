@@ -7,3 +7,11 @@ export const loadTags = createAsyncThunk(
     return result;
   }
 );
+
+export const updateTag = createAsyncThunk(
+  'tags/update',
+  async function (data, { extra: api }) {
+    const result = await api.updateTag(data);
+    return result;
+  }
+);

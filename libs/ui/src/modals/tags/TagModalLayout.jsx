@@ -27,23 +27,14 @@ const TagModalLayout = ({
 }) => {
   const [activeItems, setActiveItems] = useState([]);
   const [formType, setFormType] = useState(formProps.type);
-  //const [data, setData] = useState(null);
 
   const data = useSelector((state) => state.tags.tags);
 
-  /*
-  useEffect(function () {
-    (async () => {
-      // https://dev.to/thatamymac/dynamic-imports-of-json-ipl
-      const data = await import('../../fixtures/tag-tree.json').then(
-        (module) => module.default
-      );
-      setData(data);
-    })();
-  }, []);
-  */
+  // Soft disable because there's no disable prop for TreeView
+  const handleTreeViewItemClick = (e, item, parentItem) => {
+    if ([formTypes.create, formTypes.edit, formTypes.delete].includes(formType))
+      return;
 
-  const onSelect = (e, item, parentItem) => {
     if (activeItems.includes(item)) setActiveItems([]);
     if (!activeItems.includes(item)) setActiveItems([item]);
   };
@@ -93,7 +84,7 @@ const TagModalLayout = ({
             <FlexItem className="scroll">
               <TagTreeView
                 data={data}
-                onSelect={onSelect}
+                onSelect={handleTreeViewItemClick}
                 activeItems={activeItems}
               />
             </FlexItem>

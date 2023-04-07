@@ -11,6 +11,11 @@ export async function loadAllTags() {
 
 export async function createTag() {}
 
-export async function updateTag() {}
+export async function updateTag(data = {}) {
+  return {
+    data,
+    success: true
+  };
+}
 
 export async function deleteTag() {}
