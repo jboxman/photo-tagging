@@ -1,21 +1,11 @@
-import React from 'react';
-import { describe } from 'riteway/esm/riteway.js';
+//import { describe, it, expect } from 'vitest';
 
-import { normalize } from './helpers.js';
+describe('something truthy and falsy', () => {
+  it('true to be true', () => {
+    expect(true).toBe(true);
+  });
 
-const Jsx = <div></div>;
-
-console.log('hi');
-
-/*
-{
-  given: 'no arguments',
-  should: 'return 0',
-  actual: sum(),
-  expected: 0
-}
-*/
-
-describe('normalize tags', async (assert) => {
-  console.log('hi');
+  it('false to be false', () => {
+    expect(false).toBe(false);
+  });
 });
