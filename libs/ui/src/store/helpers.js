@@ -25,3 +25,27 @@ export const denormalize = (norm) => {
   // return parents
   return Object.values(treeHash).filter((tag) => !tag.parentId);
 };
+
+export const getSelectListItems = (tags) => {
+  const tagCrumbs = [];
+
+  function getParent({ parentId, name }) {
+    if (parentId) {
+      return [
+        ...getParent({
+          name: tags[parentId].name,
+          parentId: tags[parentId].parentId,
+        }),
+        tags[parentId].name,
+      ];
+    }
+    return [];
+  }
+
+  for (const tag of Object.values(tags)) {
+    tagCrumbs.push({
+      id: tag.id,
+      value: [...getParent(tag), tag.name].join(' > '),
+    });
+  }
+};
