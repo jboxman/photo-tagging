@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Provider, useDispatch } from 'react-redux';
 
 import configureAppStore from './store';

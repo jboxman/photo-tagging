@@ -1,3 +1,4 @@
+/*
 import React from 'react';
 import { useEffect, useState } from 'react';
 
@@ -72,5 +73,5 @@ export default {
 };
 
 const Template = (args) => <TagTree {...args} />;
-
+*/
 //export const ignore = Template.bind({});
