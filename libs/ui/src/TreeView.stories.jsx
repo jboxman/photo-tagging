@@ -5,7 +5,7 @@ import configureAppStore from './store';
 import * as api from './mocks/tags/tagApi';
 import { loadTags } from './store/tagActions';
 
-import TagModalLayout from './modals/tags/TagModalLayout';
+import TagModalLayout from './features/tags/TagModalLayout';
 
 // fa-plus-circle
 // fa-minus

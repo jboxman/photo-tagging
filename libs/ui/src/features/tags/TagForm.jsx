@@ -1,5 +1,4 @@
 import React from 'react';
-import { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useForm, Controller } from 'react-hook-form';
 

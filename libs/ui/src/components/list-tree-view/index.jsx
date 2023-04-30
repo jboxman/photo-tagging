@@ -26,7 +26,7 @@ const TagTree = () => {
   useEffect(function () {
     (async () => {
       // https://dev.to/thatamymac/dynamic-imports-of-json-ipl
-      const data = await import('../fixtures/tag-tree.json').then(
+      const data = await import('../../fixtures/tag-tree.json').then(
         (module) => module.default
       );
       setData(data);

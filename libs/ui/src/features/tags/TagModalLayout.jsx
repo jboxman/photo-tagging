@@ -8,7 +8,8 @@ import { Flex, FlexItem, Title } from '@patternfly/react-core';
 import TagActions from './TagActions';
 import TagForm from './TagForm';
 import TagConfirm from './TagConfirm';
-import TagTreeView from './TagTreeView';
+//import TagTreeView from './TagTreeView';
+import Tree from '../../components/tree';
 
 // Need to know activeItems
 // Need to load initial data
@@ -22,7 +23,6 @@ const formTypes = {
 };
 
 const TagModalLayout = ({
-  tags = [],
   formProps = { type: formTypes.choice },
 }) => {
   const [activeItems, setActiveItems] = useState([]);
@@ -31,7 +31,7 @@ const TagModalLayout = ({
   const data = useSelector((state) => state.tags.tags);
 
   // Soft disable because there's no disable prop for TreeView
-  const handleTreeViewItemClick = (e, item, parentItem) => {
+  const handleTreeViewItemClick = (e, item) => {
     if ([formTypes.create, formTypes.edit, formTypes.delete].includes(formType))
       return;
 
@@ -48,20 +48,20 @@ const TagModalLayout = ({
       return (
         <TagActions
           activeSelection={activeItems.length > 0 ? true : false}
-          onCreate={createHandleClick(formTypes.create)}
-          onEdit={createHandleClick(formTypes.edit)}
-          onDelete={createHandleClick(formTypes.delete)}
+          onCreateClick={createHandleClick(formTypes.create)}
+          onEditClick={createHandleClick(formTypes.edit)}
+          onDeleteClick={createHandleClick(formTypes.delete)}
         />
       );
     }
     if (formType == formTypes.delete) {
-      return <TagConfirm onCancel={createHandleClick(formTypes.choice)} />;
+      return <TagConfirm onCancelClick={createHandleClick(formTypes.choice)} />;
     }
     return (
       <TagForm
         formType={formType}
         activeItem={activeItems[0]}
-        onCancel={createHandleClick(formTypes.choice)}
+        onCancelClick={createHandleClick(formTypes.choice)}
       />
     );
   };
@@ -82,10 +82,9 @@ const TagModalLayout = ({
             flexWrap={{ default: 'nowrap' }}
           >
             <FlexItem className="scroll">
-              <TagTreeView
+              <Tree
                 data={data}
                 onSelect={handleTreeViewItemClick}
-                activeItems={activeItems}
               />
             </FlexItem>
           </Flex>
