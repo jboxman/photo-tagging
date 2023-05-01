@@ -1,47 +1,99 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useForm, Controller } from 'react-hook-form';
+import { Box, TextInput, Group, Button, Select } from '@mantine/core';
 
+import { getSelectListItems } from '../../store/helpers';
+
+/*
 import {
   Button,
   Form,
-  FormGroup,
+  Group,
   TextInput,
-  ActionGroup,
+  Group,
 } from '@patternfly/react-core';
+*/
 
 const upperFirst = (str) =>
   `${str.slice(0, 1).toLocaleUpperCase()}${str.slice(1)}`;
 
-const TagForm = ({ formType = '', activeItem = {}, onSave, onCancel }) => {
+const TagForm = ({
+  data,
+  formType = '',
+  activeItem = {},
+  onSave,
+  onCancel
+}) => {
+  const { name: tagName, parentId } = activeItem;
+  console.log(activeItem);
   const { control, handleSubmit } = useForm({
     defaultValues: {
-      tagName: activeItem.name || '',
-    },
+      tagName: tagName ?? '',
+      parentId: String(parentId) ?? ''
+    }
   });
-  const onSubmit = (data) => console.log(data);
+
+  const onSubmit = (values) => console.log(values);
 
   console.log(activeItem);
   return (
-    <Form onSubmit={handleSubmit(onSubmit)}>
-      <FormGroup label="Tag" isRequired>
+    <Box maw={300} mx="auto">
+      <form onSubmit={onSubmit}>
+        <Group>
+          <Controller
+            name="tagName"
+            control={control}
+            render={({ field }) => (
+              <TextInput label="Tag" withAsterisk {...field} />
+            )}
+          />
+
+          <Controller
+            name="parentId"
+            control={control}
+            render={({ field }) => (
+              <Select
+                label="Parent"
+                withAsterisk
+                searchable
+                clearable
+                data={data ? getSelectListItems({ tags: data }) : []}
+                maxDropdownHeight={100}
+                {...field}
+              />
+            )}
+          />
+        </Group>
+
+        <Group
+          sx={{
+            padding: '1rem 0 0 0'
+          }}
+        >
+          <Button>{upperFirst(formType)}</Button>
+          <Button>Cancel</Button>
+        </Group>
+      </form>
+    </Box>
+  );
+};
+export default TagForm;
+
+/*
+<form onSubmit={handleSubmit(onSubmit)}>
+      <Group label="Tag" isRequired>
         <Controller
           name="tagName"
           control={control}
           render={({ field }) => (
-            <TextInput {...field} id="any" isRequired type="text" />
+            <TextInput {...field} isRequired />
           )}
         />
-      </FormGroup>
-      <ActionGroup>
-        <Button type="submit" variant="primary">
-          {upperFirst(formType)}
-        </Button>
-        <Button variant="link" onClick={onCancel}>
-          Cancel
-        </Button>
-      </ActionGroup>
-    </Form>
-  );
-};
-export default TagForm;
+      </Group>
+      <Group>
+        <Button type="submit">{upperFirst(formType)}</Button>
+        <Button onClick={onCancel}>Cancel</Button>
+      </Group>
+    </form>
+*/

@@ -3,17 +3,20 @@ import PropTypes from 'prop-types';
 
 import { Group, Button } from '@mantine/core';
 
-const TagForm = ({ activeSelection = false, onCreateClick, onEditClick, onDeleteClick }) => {
+const TagForm = ({
+  activeSelection = false,
+  onCreateClick,
+  onEditClick,
+  onDeleteClick,
+}) => {
   return (
     <form>
       <Group>
-        <Button variant="link" onClick={onCreateClick}>
-          Create
-        </Button>
-        <Button variant="link" onClick={onEditClick} disabled={!activeSelection}>
+        <Button onClick={onCreateClick}>Create</Button>
+        <Button onClick={onEditClick} disabled={!activeSelection}>
           Edit
         </Button>
-        <Button variant="link" onClick={onDeleteClick} disabled={!activeSelection}>
+        <Button onClick={onDeleteClick} disabled={!activeSelection}>
           Delete
         </Button>
       </Group>

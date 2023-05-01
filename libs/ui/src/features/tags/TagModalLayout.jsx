@@ -8,10 +8,11 @@ import { Flex, FlexItem, Title } from '@patternfly/react-core';
 import TagActions from './TagActions';
 import TagForm from './TagForm';
 import TagConfirm from './TagConfirm';
-//import TagTreeView from './TagTreeView';
 import Tree from '../../components/tree';
 
-// Need to know activeItems
+import { denormalizeTree } from '../../store/helpers';
+
+// Need to know selectedNode
 // Need to load initial data
 // Need to support create/edit/delete
 
@@ -19,24 +20,28 @@ const formTypes = {
   choice: 'choice',
   create: 'create',
   edit: 'edit',
-  delete: 'delete',
+  delete: 'delete'
 };
 
-const TagModalLayout = ({
-  formProps = { type: formTypes.choice },
-}) => {
-  const [activeItems, setActiveItems] = useState([]);
+const TagModalLayout = ({ formProps = { type: formTypes.choice } }) => {
+  const [selectedNode, setSelectedNode] = useState(null);
   const [formType, setFormType] = useState(formProps.type);
 
   const data = useSelector((state) => state.tags.tags);
 
   // Soft disable because there's no disable prop for TreeView
-  const handleTreeViewItemClick = (e, item) => {
+  const handleNodeSelection = (n) => {
     if ([formTypes.create, formTypes.edit, formTypes.delete].includes(formType))
       return;
 
-    if (activeItems.includes(item)) setActiveItems([]);
-    if (!activeItems.includes(item)) setActiveItems([item]);
+    // Event fires on first render w/o any selection
+    //if (!n) return;
+
+    if (n.data.id == selectedNode?.id) {
+      setSelectedNode(null);
+      return;
+    }
+    setSelectedNode(n.data);
   };
 
   const createHandleClick = (actionName) => () => {
@@ -47,7 +52,7 @@ const TagModalLayout = ({
     if (formType == formTypes.choice) {
       return (
         <TagActions
-          activeSelection={activeItems.length > 0 ? true : false}
+          activeSelection={!!selectedNode?.id}
           onCreateClick={createHandleClick(formTypes.create)}
           onEditClick={createHandleClick(formTypes.edit)}
           onDeleteClick={createHandleClick(formTypes.delete)}
@@ -59,8 +64,9 @@ const TagModalLayout = ({
     }
     return (
       <TagForm
+        data={data}
         formType={formType}
-        activeItem={activeItems[0]}
+        activeItem={selectedNode}
         onCancelClick={createHandleClick(formTypes.choice)}
       />
     );
@@ -83,8 +89,8 @@ const TagModalLayout = ({
           >
             <FlexItem className="scroll">
               <Tree
-                data={data}
-                onSelect={handleTreeViewItemClick}
+                data={denormalizeTree(data)}
+                onNodeSelect={handleNodeSelection}
               />
             </FlexItem>
           </Flex>

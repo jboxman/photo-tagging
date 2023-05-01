@@ -1,9 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 import { loadTags, updateTag } from './tagActions';
-import { normalize, denormalize } from './helpers';
+import { normalize } from './helpers';
 
-const initialState = {};
+const initialState = {
+  tags: [],
+};
 
 const tagsSlice = createSlice({
   name: 'tags',
@@ -21,7 +23,6 @@ const tagsSlice = createSlice({
         return Object.assign(all, o);
       }, {});
       //      console.log(state.tags);
-      console.log(denormalize(state.tags));
       //console.log(Object.values(state.tags).filter((tag) => !tag.parentId));
     });
     builder.addCase(updateTag.fulfilled, (state, action) => {

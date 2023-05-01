@@ -1,3 +1,4 @@
+import React from 'react';
 import { useState, useEffect } from 'react';
 import { Tree as Arborist } from 'react-arborist';
 import { Text } from '@mantine/core';
@@ -17,7 +18,7 @@ export const normalize = (obj) => {
   );
 };
 
-export default function Tree({ data = [] }) {
+export default function Tree({ data = [], onNodeSelect = () => {} }) {
   //const [data, setData] = useState([]);
 
   /*
@@ -46,10 +47,8 @@ export default function Tree({ data = [] }) {
         <Arborist
           paddingTop={10}
           paddingBottom={10}
-          overscanCount={38}
-          initialData={data}
-          onSelect={(...args) => console.log(args)}
-          onActivate={(...args) => console.log(args)}
+          data={data}
+          onActivate={onNodeSelect}
           renderRow={DefaultRow}
         >
           {Node}
@@ -70,8 +69,10 @@ function Node(props) {
 }
 
 export function DefaultRow({ node, attrs, innerRef, children }) {
-  const handleClick = (e) =>
+  const handleClick = (e) => {
     node.isSelected ? node.deselect() : node.select();
+    node.activate();
+  };
   return (
     <div
       {...attrs}

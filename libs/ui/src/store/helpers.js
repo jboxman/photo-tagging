@@ -11,7 +11,23 @@ export const normalize = (obj) => {
   );
 };
 
+// TODO -- add parentId
+export const denormalizeTree = (normalizedTree) => {
+  // Need to deal with duplicate IDs, maybe with cuid2(), or set id = name
+  const allTags = Object.values(normalizedTree)
+    .filter((v) => v.parentId === null)
+    .reduce(function me(accum, v) {
+      const { id, name } = v;
+      const allChildren = v.children
+        .map((id) => normalizedTree[id])
+        .reduce(me, []);
+      return [...accum, { id: String(id), name, children: allChildren }];
+    }, []);
+  return allTags;
+};
+
 // Derived from https://stackoverflow.com/a/73030226
+/*
 export const denormalize = (norm) => {
   const treeHash = Object.fromEntries(
     Object.entries(norm).map(([k, v]) => [k, { ...v }])
@@ -25,27 +41,34 @@ export const denormalize = (norm) => {
   // return parents
   return Object.values(treeHash).filter((tag) => !tag.parentId);
 };
+*/
 
-export const getSelectListItems = (tags) => {
+export const getSelectListItems = ({
+  tags: normalizedTags,
+  idName = 'value',
+  labelName = 'label',
+}) => {
   const tagCrumbs = [];
 
   function getParent({ parentId, name }) {
     if (parentId) {
       return [
         ...getParent({
-          name: tags[parentId].name,
-          parentId: tags[parentId].parentId,
+          name: normalizedTags[parentId].name,
+          parentId: normalizedTags[parentId].parentId,
         }),
-        tags[parentId].name,
+        normalizedTags[parentId].name,
       ];
     }
     return [];
   }
 
-  for (const tag of Object.values(tags)) {
+  for (const tag of Object.values(normalizedTags)) {
     tagCrumbs.push({
-      id: tag.id,
-      value: [...getParent(tag), tag.name].join(' > '),
+      [idName]: tag.id,
+      [labelName]: [...getParent(tag), tag.name].join(' > '),
     });
   }
+
+  return tagCrumbs;
 };
