@@ -11,17 +11,24 @@ export const normalize = (obj) => {
   );
 };
 
-// TODO -- add parentId
 export const denormalizeTree = (normalizedTree) => {
   // Need to deal with duplicate IDs, maybe with cuid2(), or set id = name
   const allTags = Object.values(normalizedTree)
     .filter((v) => v.parentId === null)
     .reduce(function me(accum, v) {
-      const { id, name } = v;
+      const { id, name, parentId } = v;
       const allChildren = v.children
         .map((id) => normalizedTree[id])
         .reduce(me, []);
-      return [...accum, { id: String(id), name, children: allChildren }];
+      return [
+        ...accum,
+        {
+          id: String(id),
+          parentId: String(parentId),
+          name,
+          children: allChildren,
+        },
+      ];
     }, []);
   return allTags;
 };
@@ -65,7 +72,7 @@ export const getSelectListItems = ({
 
   for (const tag of Object.values(normalizedTags)) {
     tagCrumbs.push({
-      [idName]: tag.id,
+      [idName]: String(tag.id),
       [labelName]: [...getParent(tag), tag.name].join(' > '),
     });
   }

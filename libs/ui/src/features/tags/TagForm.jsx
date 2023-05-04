@@ -26,17 +26,16 @@ const TagForm = ({
   onCancel
 }) => {
   const { name: tagName, parentId } = activeItem;
-  console.log(activeItem);
+
   const { control, handleSubmit } = useForm({
     defaultValues: {
       tagName: tagName ?? '',
-      parentId: String(parentId) ?? ''
+      parentId: parentId ?? ''
     }
   });
 
   const onSubmit = (values) => console.log(values);
 
-  console.log(activeItem);
   return (
     <Box maw={300} mx="auto">
       <form onSubmit={onSubmit}>
@@ -53,15 +52,17 @@ const TagForm = ({
             name="parentId"
             control={control}
             render={({ field }) => (
-              <Select
-                label="Parent"
-                withAsterisk
-                searchable
-                clearable
-                data={data ? getSelectListItems({ tags: data }) : []}
-                maxDropdownHeight={100}
-                {...field}
-              />
+              <>
+                <Select
+                  label="Parent"
+                  withAsterisk
+                  searchable
+                  clearable
+                  data={getSelectListItems({ tags: data })}
+                  maxDropdownHeight={100}
+                  {...field}
+                />
+              </>
             )}
           />
         </Group>
