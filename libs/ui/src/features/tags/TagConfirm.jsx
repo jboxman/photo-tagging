@@ -3,18 +3,17 @@ import PropTypes from 'prop-types';
 
 import { Group, Button } from '@mantine/core';
 
-
 const TagConfirm = ({ onDeleteClick, onCancelClick }) => {
   return (
     <form>
-      <Group>
-        <Button variant="link" onClick={onDeleteClick}>
+      <Button.Group>
+        <Button compact onClick={onDeleteClick}>
           Delete
         </Button>
-        <Button variant="link" onClick={onCancelClick}>
+        <Button compact onClick={onCancelClick}>
           Cancel
         </Button>
-      </Group>
+      </Button.Group>
     </form>
   );
 };

@@ -5,16 +5,6 @@ import { Box, TextInput, Group, Button, Select } from '@mantine/core';
 
 import { getSelectListItems } from '../../store/helpers';
 
-/*
-import {
-  Button,
-  Form,
-  Group,
-  TextInput,
-  Group,
-} from '@patternfly/react-core';
-*/
-
 const upperFirst = (str) =>
   `${str.slice(0, 1).toLocaleUpperCase()}${str.slice(1)}`;
 
@@ -22,8 +12,8 @@ const TagForm = ({
   data,
   formType = '',
   activeItem = {},
-  onSave,
-  onCancel
+  onSaveClick,
+  onCancelClick
 }) => {
   const { name: tagName, parentId } = activeItem;
 
@@ -72,29 +62,15 @@ const TagForm = ({
             padding: '1rem 0 0 0'
           }}
         >
-          <Button>{upperFirst(formType)}</Button>
-          <Button>Cancel</Button>
+          <Button.Group>
+            <Button compact>{upperFirst(formType)}</Button>
+            <Button compact onClick={onCancelClick}>
+              Cancel
+            </Button>
+          </Button.Group>
         </Group>
       </form>
     </Box>
   );
 };
 export default TagForm;
-
-/*
-<form onSubmit={handleSubmit(onSubmit)}>
-      <Group label="Tag" isRequired>
-        <Controller
-          name="tagName"
-          control={control}
-          render={({ field }) => (
-            <TextInput {...field} isRequired />
-          )}
-        />
-      </Group>
-      <Group>
-        <Button type="submit">{upperFirst(formType)}</Button>
-        <Button onClick={onCancel}>Cancel</Button>
-      </Group>
-    </form>
-*/

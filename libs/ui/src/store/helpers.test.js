@@ -4,6 +4,7 @@ const selectListItemsJson = {
   value: '3',
   label: 'locality > US > FL',
 };
+// const tags = await import('./tags.json').then((module) => module.default);
 
 describe('something truthy and falsy', () => {
   it('true to be true', () => {

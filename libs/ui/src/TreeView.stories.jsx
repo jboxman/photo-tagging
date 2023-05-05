@@ -16,9 +16,11 @@ const store = configureAppStore({ api });
 const Wrapper = ({ children }) => {
   const dispatch = useDispatch();
   dispatch(loadTags());
-
   return <>{children}</>;
 };
+
+// TODO - Storybook severely lags rendering of the tree list.
+// This doesn't happen outside of Storybook.
 const Template = (args) => <TagModalLayout {...args} />;
 
 export default {
