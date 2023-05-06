@@ -1,15 +1,11 @@
 import React from 'react';
 import { Provider, useDispatch } from 'react-redux';
 
-import configureAppStore from './store';
-import * as api from './mocks/tags/tagApi';
-import { loadTags } from './store/tagActions';
+import configureAppStore from '../../store';
+import * as api from '../../mocks/tags/tagApi';
+import { loadTags } from '../../store/tagActions';
 
-import TagModalLayout from './features/tags/TagModalLayout';
-
-// fa-plus-circle
-// fa-minus
-// fa-plus
+import TagManager from '.';
 
 const store = configureAppStore({ api });
 
@@ -21,10 +17,10 @@ const Wrapper = ({ children }) => {
 
 // TODO - Storybook severely lags rendering of the tree list.
 // This doesn't happen outside of Storybook.
-const Template = (args) => <TagModalLayout {...args} />;
+const Template = (args) => <TagManager {...args} />;
 
 export default {
-  title: 'Tag Manager',
+  title: 'feats/Tag Manager',
   component: Template,
   parameters: {
     layout: 'centered',

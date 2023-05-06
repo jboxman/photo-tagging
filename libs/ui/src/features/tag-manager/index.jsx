@@ -5,9 +5,9 @@ import PropTypes from 'prop-types';
 
 import { Flex, Stack } from '@mantine/core';
 
-import TagActions from './TagActions';
-import TagForm from './TagForm';
-import TagConfirm from './TagConfirm';
+import TagActions from './components/TagActions';
+import TagForm from './components/TagForm';
+import TagConfirm from './components/TagConfirm';
 import Tree from '../../components/tree';
 
 import { denormalizeTree } from '../../store/helpers';
@@ -23,7 +23,7 @@ const formTypes = {
   delete: 'delete'
 };
 
-const TagModalLayout = ({ formProps = { type: formTypes.choice } }) => {
+const TagManager = ({ formProps = { type: formTypes.choice } }) => {
   const [selectedNode, setSelectedNode] = useState({});
   const [formType, setFormType] = useState(formProps.type);
 
@@ -86,4 +86,4 @@ const TagModalLayout = ({ formProps = { type: formTypes.choice } }) => {
     </>
   );
 };
-export default TagModalLayout;
+export default TagManager;

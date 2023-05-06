@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { useForm, Controller } from 'react-hook-form';
 import { Box, TextInput, Group, Button, Select } from '@mantine/core';
 
-import { getSelectListItems } from '../../store/helpers';
+import { getSelectListItems } from '../../../store/helpers';
 
 const upperFirst = (str) =>
   `${str.slice(0, 1).toLocaleUpperCase()}${str.slice(1)}`;

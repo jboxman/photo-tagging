@@ -1,11 +1,11 @@
 import React from 'react';
 
-import TagForm from '../TagForm';
+import TagForm from './TagForm';
 
 const Template = (args) => <TagForm {...args} />;
 
 export default {
-  title: 'tags/components/TagForm',
+  title: 'feats/Tag Manager/components',
   component: Template,
   parameters: {
     layout: 'centered',

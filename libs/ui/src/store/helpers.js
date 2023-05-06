@@ -23,7 +23,7 @@ export const denormalizeTree = (normalizedTree) => {
       return [
         ...accum,
         {
-          id: String(id),
+          id: `${id}-${name}`,
           parentId: String(parentId),
           name,
           children: allChildren,
