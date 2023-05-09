@@ -24,11 +24,14 @@ const TagForm = ({
     }
   });
 
-  const onSubmit = (values) => console.log(values);
+  const onSubmit = (values) => {
+    console.log(values);
+    onSaveClick(values);
+  };
 
   return (
     <Box maw={300} mx="auto">
-      <form onSubmit={onSubmit}>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <Group>
           <Controller
             name="tagName"
@@ -63,8 +66,10 @@ const TagForm = ({
           }}
         >
           <Button.Group>
-            <Button compact>{upperFirst(formType)}</Button>
-            <Button compact onClick={onCancelClick}>
+            <Button type="submit" compact>
+              {upperFirst(formType)}
+            </Button>
+            <Button type="button" compact onClick={onCancelClick}>
               Cancel
             </Button>
           </Button.Group>

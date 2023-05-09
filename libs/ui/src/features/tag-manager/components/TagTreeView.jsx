@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 import { TreeView } from '@patternfly/react-core';
 
-import { denormalize } from '../../store/helpers';
+import { denormalize } from '../../../store/helpers';
 
 const TagTreeView = ({ data, activeItems = [], onSelect }) => {
   //const [activeItems, setActiveItems] = useState([]);

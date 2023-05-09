@@ -12,7 +12,6 @@ export const normalize = (obj) => {
 };
 
 export const denormalizeTree = (normalizedTree) => {
-  // Need to deal with duplicate IDs, maybe with cuid2(), or set id = name
   const allTags = Object.values(normalizedTree)
     .filter((v) => v.parentId === null)
     .reduce(function me(accum, v) {
@@ -23,7 +22,8 @@ export const denormalizeTree = (normalizedTree) => {
       return [
         ...accum,
         {
-          id: `${id}-${name}`,
+          id: `${id}${parentId ? ['-', parentId].join('') : ''}`,
+          databaseId: id,
           parentId: String(parentId),
           name,
           children: allChildren,
@@ -32,23 +32,6 @@ export const denormalizeTree = (normalizedTree) => {
     }, []);
   return allTags;
 };
-
-// Derived from https://stackoverflow.com/a/73030226
-/*
-export const denormalize = (norm) => {
-  const treeHash = Object.fromEntries(
-    Object.entries(norm).map(([k, v]) => [k, { ...v }])
-  );
-
-  Object.values(norm).forEach((v) => {
-    // hook up children
-    treeHash[v.id].children = v.children.map((k) => treeHash[k]);
-  });
-
-  // return parents
-  return Object.values(treeHash).filter((tag) => !tag.parentId);
-};
-*/
 
 export const getSelectListItems = ({
   tags: normalizedTags,

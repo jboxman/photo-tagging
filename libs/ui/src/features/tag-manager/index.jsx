@@ -48,6 +48,10 @@ const TagManager = ({ formProps = { type: formTypes.choice } }) => {
     setFormType(actionName);
   };
 
+  // Use activeItem here
+  // Use dispatch here
+  const handleSaveClick = () => {};
+
   const renderForm = (formType) => {
     if (formType == formTypes.choice) {
       return (
@@ -67,6 +71,7 @@ const TagManager = ({ formProps = { type: formTypes.choice } }) => {
         data={data}
         formType={formType}
         activeItem={selectedNode}
+        onSaveClick={handleSaveClick}
         onCancelClick={createHandleClick(formTypes.choice)}
       />
     );
