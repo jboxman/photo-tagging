@@ -8,12 +8,17 @@ import { getSelectListItems } from '../../../store/helpers';
 const upperFirst = (str) =>
   `${str.slice(0, 1).toLocaleUpperCase()}${str.slice(1)}`;
 
+const saveValues = ({ parentId, tagName = '' } = {}) => ({
+  parentId,
+  tagName
+});
+
 const TagForm = ({
   data,
   formType = '',
   activeItem = {},
-  onSaveClick,
-  onCancelClick
+  onSaveClick = () => {},
+  onCancelClick = () => {}
 }) => {
   const { name: tagName, parentId } = activeItem;
 
@@ -26,7 +31,7 @@ const TagForm = ({
 
   const onSubmit = (values) => {
     console.log(values);
-    onSaveClick(values);
+    onSaveClick(saveValues(values));
   };
 
   return (

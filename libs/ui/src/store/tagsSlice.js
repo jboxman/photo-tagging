@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, current } from '@reduxjs/toolkit';
 
 import { loadTags, updateTag } from './tagActions';
 import { normalize } from './helpers';
@@ -26,7 +26,9 @@ const tagsSlice = createSlice({
       //console.log(Object.values(state.tags).filter((tag) => !tag.parentId));
     });
     builder.addCase(updateTag.fulfilled, (state, action) => {
-      const { id, parentId, name } = action.payload.data;
+      const { id, parentId, tagName: name } = action.payload.data;
+      console.log(action.payload);
+      Object.assign(state.tags[id], { parentId, name });
       //state.status = 'success';
       //state.error = null;
       //const tag = state.tags.find(({ id: currentId }) => currentId == id);

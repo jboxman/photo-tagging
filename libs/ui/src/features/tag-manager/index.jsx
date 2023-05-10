@@ -1,6 +1,6 @@
 import React from 'react';
-import { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useState, useCallback } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import { Flex, Stack } from '@mantine/core';
@@ -11,6 +11,7 @@ import TagConfirm from './components/TagConfirm';
 import Tree from '../../components/tree';
 
 import { denormalizeTree } from '../../store/helpers';
+import { updateTag } from '../../store/tagActions';
 
 // Need to know selectedNode
 // Need to load initial data
@@ -28,6 +29,8 @@ const TagManager = ({ formProps = { type: formTypes.choice } }) => {
   const [formType, setFormType] = useState(formProps.type);
 
   const data = useSelector((state) => state.tags.tags);
+
+  const dispatch = useDispatch();
 
   // Soft disable because there's no disable prop for TreeView
   const handleNodeSelection = (n) => {
@@ -50,7 +53,10 @@ const TagManager = ({ formProps = { type: formTypes.choice } }) => {
 
   // Use activeItem here
   // Use dispatch here
-  const handleSaveClick = () => {};
+  const handleSaveClick = (tag) => {
+    console.log(tag);
+    dispatch(updateTag({ ...tag, id: selectedNode?.databaseId }));
+  };
 
   const renderForm = (formType) => {
     if (formType == formTypes.choice) {
