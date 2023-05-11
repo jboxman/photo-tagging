@@ -1,27 +1,24 @@
 import React from 'react';
 import { Tree as Arborist } from 'react-arborist';
-import { Text, Paper, Title } from '@mantine/core';
+import { Text, Paper } from '@mantine/core';
 
 import styles from './gmail.module.css';
 
 export default function Tree({ data = [], onNodeSelect = () => {} }) {
   return (
-    <>
-      <Title order={2}>Tags</Title>
-      <Paper shadow="xs" radius="xs" p="xs">
-        {!data.length <= 0 ? (
-          <Arborist
-            paddingTop={10}
-            paddingBottom={10}
-            data={data}
-            onActivate={onNodeSelect}
-            renderRow={DefaultRow}
-          >
-            {Node}
-          </Arborist>
-        ) : null}
-      </Paper>
-    </>
+    <Paper shadow="xs" radius="xs" p="xs">
+      {!data.length <= 0 ? (
+        <Arborist
+          paddingTop={10}
+          paddingBottom={10}
+          data={data}
+          onActivate={onNodeSelect}
+          renderRow={DefaultRow}
+        >
+          {Node}
+        </Arborist>
+      ) : null}
+    </Paper>
   );
 }
 

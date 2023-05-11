@@ -51,11 +51,12 @@ const TagManager = ({ formProps = { type: formTypes.choice } }) => {
     setFormType(actionName);
   };
 
-  // Use activeItem here
-  // Use dispatch here
+  // TODO - contemplate failure
   const handleSaveClick = (tag) => {
     console.log(tag);
-    dispatch(updateTag({ ...tag, id: selectedNode?.databaseId }));
+    dispatch(updateTag({ ...tag, id: selectedNode?.databaseId })).then(() =>
+      setFormType(formTypes.choice)
+    );
   };
 
   const renderForm = (formType) => {
@@ -98,3 +99,9 @@ const TagManager = ({ formProps = { type: formTypes.choice } }) => {
   );
 };
 export default TagManager;
+
+TagManager.propTypes = {
+  formProps: PropTypes.shape({
+    type: PropTypes.oneOf(Object.keys(formTypes))
+  })
+};

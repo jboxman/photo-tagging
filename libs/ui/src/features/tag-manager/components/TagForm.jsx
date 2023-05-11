@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useForm, Controller } from 'react-hook-form';
-import { Box, TextInput, Group, Button, Select } from '@mantine/core';
+import { Box, TextInput, Group, Button, Select, Text } from '@mantine/core';
 
 import { getSelectListItems } from '../../../store/helpers';
 
@@ -22,6 +22,7 @@ const TagForm = ({
 }) => {
   const { name: tagName, parentId } = activeItem;
 
+  // TODO - add validation
   const { control, handleSubmit } = useForm({
     defaultValues: {
       tagName: tagName ?? '',
@@ -51,11 +52,13 @@ const TagForm = ({
             control={control}
             render={({ field }) => (
               <>
+                <Text>{JSON.stringify(field, null, 2)}</Text>
                 <Select
                   label="Parent"
                   withAsterisk
                   searchable
                   clearable
+                  nothingFound={<Text>Not found</Text>}
                   data={getSelectListItems({ tags: data })}
                   maxDropdownHeight={100}
                   {...field}

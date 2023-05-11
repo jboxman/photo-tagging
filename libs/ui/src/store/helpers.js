@@ -4,8 +4,8 @@ export const normalize = (obj) => {
     {
       [obj.id]: {
         ...obj,
-        children: obj.children.map((v) => v.id),
-      },
+        children: obj.children.map((v) => v.id)
+      }
     },
     ...obj.children.map(normalize)
   );
@@ -24,10 +24,10 @@ export const denormalizeTree = (normalizedTree) => {
         {
           id: `${id}${parentId ? ['-', parentId].join('') : ''}`,
           databaseId: id,
-          parentId: String(parentId),
+          parentId: String(parentId ?? ''),
           name,
-          children: allChildren,
-        },
+          children: allChildren
+        }
       ];
     }, []);
   return allTags;
@@ -36,18 +36,23 @@ export const denormalizeTree = (normalizedTree) => {
 export const getSelectListItems = ({
   tags: normalizedTags,
   idName = 'value',
-  labelName = 'label',
+  labelName = 'label'
 }) => {
-  const tagCrumbs = [];
+  const tagCrumbs = [
+    {
+      [idName]: '',
+      [labelName]: 'None'
+    }
+  ];
 
   function getParent({ parentId, name }) {
     if (parentId) {
       return [
         ...getParent({
           name: normalizedTags[parentId].name,
-          parentId: normalizedTags[parentId].parentId,
+          parentId: normalizedTags[parentId].parentId
         }),
-        normalizedTags[parentId].name,
+        normalizedTags[parentId].name
       ];
     }
     return [];
@@ -56,7 +61,7 @@ export const getSelectListItems = ({
   for (const tag of Object.values(normalizedTags)) {
     tagCrumbs.push({
       [idName]: String(tag.id),
-      [labelName]: [...getParent(tag), tag.name].join(' > '),
+      [labelName]: [...getParent(tag), tag.name].join(' > ')
     });
   }
 

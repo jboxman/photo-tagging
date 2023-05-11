@@ -9,7 +9,12 @@ export async function loadAllTags() {
   };
 }
 
-export async function createTag() {}
+export async function createTag(data = {}) {
+  return {
+    data,
+    success: true
+  };
+}
 
 export async function updateTag(data = {}) {
   return {
@@ -18,4 +23,8 @@ export async function updateTag(data = {}) {
   };
 }
 
-export async function deleteTag() {}
+export async function deleteTag(data = {}) {
+  return {
+    success: true
+  };
+}
