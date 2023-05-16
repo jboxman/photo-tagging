@@ -37,9 +37,11 @@
   color: black;
 }
 
+/*
 [role='treeitem'][aria-selected='true'] .node {
   color: white;
 }
+*/
 
 .node {
   display: flex;

@@ -91,6 +91,18 @@ const TagManager = ({ formProps = { type: formTypes.choice } }) => {
           <Tree
             data={denormalizeTree(data)}
             onNodeSelect={handleNodeSelection}
+            renderRowProps={{
+              disableSelect: [
+                formTypes.create,
+                formTypes.edit,
+                formTypes.delete
+              ].includes(formType),
+              onClick: (node) => {
+                node.isSelected ? node.deselect() : node.select();
+                node.activate();
+                console.log('hello');
+              }
+            }}
           />
         </Stack>
         <Stack justify="flex-start">{renderForm(formType)}</Stack>

@@ -2,9 +2,15 @@ import React from 'react';
 import { Tree as Arborist } from 'react-arborist';
 import { Text, Paper } from '@mantine/core';
 
-import styles from './gmail.module.css';
+// From Arborist Gmail example
+import styles from './styles.module.css';
 
-export default function Tree({ data = [], onNodeSelect = () => {} }) {
+export default function Tree({
+  data = [],
+  renderRow = DefaultRow,
+  renderRowProps = { selectBehavior: () => {}, disableSelect: false },
+  onNodeSelect = () => {},
+}) {
   return (
     <Paper shadow="xs" radius="xs" p="xs">
       {!data.length <= 0 ? (
@@ -13,7 +19,7 @@ export default function Tree({ data = [], onNodeSelect = () => {} }) {
           paddingBottom={10}
           data={data}
           onActivate={onNodeSelect}
-          renderRow={DefaultRow}
+          renderRow={withCustomProps(renderRow, renderRowProps)}
         >
           {Node}
         </Arborist>
@@ -32,8 +38,18 @@ function Node(props) {
   );
 }
 
-export function DefaultRow({ node, attrs, innerRef, children }) {
+export function DefaultRow({
+  node,
+  attrs,
+  innerRef,
+  children,
+  selectBehavior,
+  disableSelect,
+}) {
+  // Need to disable this if the form type is in edit mode
+  // So this behavior depends on behavior outside of its knowledge
   const handleClick = (e) => {
+    if (disableSelect) return;
     node.isSelected ? node.deselect() : node.select();
     node.activate();
   };
@@ -47,4 +63,10 @@ export function DefaultRow({ node, attrs, innerRef, children }) {
       {children}
     </div>
   );
+}
+
+// Can I wrap this and apply props?
+
+function withCustomProps(C, props = {}) {
+  return (originalProps) => <C {...originalProps} {...props} />;
 }
