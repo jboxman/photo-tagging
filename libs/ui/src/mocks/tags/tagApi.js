@@ -25,6 +25,7 @@ export async function updateTag(data = {}) {
 
 export async function deleteTag(data = {}) {
   return {
+    data,
     success: true
   };
 }

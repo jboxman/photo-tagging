@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { Group, Button } from '@mantine/core';
+import { Button } from '@mantine/core';
 
 const TagConfirm = ({ onDeleteClick, onCancelClick }) => {
   return (
@@ -18,3 +18,8 @@ const TagConfirm = ({ onDeleteClick, onCancelClick }) => {
   );
 };
 export default TagConfirm;
+
+TagConfirm.propTypes = {
+  onDeleteClick: PropTypes.func,
+  onCancelClick: PropTypes.func,
+};

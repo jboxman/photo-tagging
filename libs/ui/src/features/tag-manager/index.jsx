@@ -11,7 +11,7 @@ import TagConfirm from './components/TagConfirm';
 import Tree from '../../components/tree';
 
 import { denormalizeTree } from '../../store/helpers';
-import { updateTag } from '../../store/tagActions';
+import { updateTag, deleteTag } from '../../store/tagActions';
 
 // Need to know selectedNode
 // Need to load initial data
@@ -59,6 +59,12 @@ const TagManager = ({ formProps = { type: formTypes.choice } }) => {
     );
   };
 
+  const handleDeleteClick = () => {
+    dispatch(deleteTag({ id: selectedNode?.databaseId })).then(() =>
+      setFormType(formTypes.choice)
+    );
+  };
+
   const renderForm = (formType) => {
     if (formType == formTypes.choice) {
       return (
@@ -71,7 +77,12 @@ const TagManager = ({ formProps = { type: formTypes.choice } }) => {
       );
     }
     if (formType == formTypes.delete) {
-      return <TagConfirm onCancelClick={createHandleClick(formTypes.choice)} />;
+      return (
+        <TagConfirm
+          onDeleteClick={handleDeleteClick}
+          onCancelClick={createHandleClick(formTypes.choice)}
+        />
+      );
     }
     return (
       <TagForm

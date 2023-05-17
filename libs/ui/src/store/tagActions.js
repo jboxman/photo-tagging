@@ -23,3 +23,11 @@ export const updateTag = createAsyncThunk(
     return result;
   }
 );
+
+export const deleteTag = createAsyncThunk(
+  'tags/delete',
+  async function (data = {}, { extra: api }) {
+    const result = await api.deleteTag(data);
+    return result;
+  }
+);

@@ -1,11 +1,13 @@
 import { createSlice, current } from '@reduxjs/toolkit';
 
-import { loadTags, createTag, updateTag } from './tagActions';
+import { loadTags, createTag, updateTag, deleteTag } from './tagActions';
 import { normalize } from './helpers';
 
 const initialState = {
-  tags: [],
+  tags: {},
 };
+
+// TODO - need tagFactory() that returns a real tag object every time
 
 const tagsSlice = createSlice({
   name: 'tags',
@@ -17,11 +19,27 @@ const tagsSlice = createSlice({
         return Object.assign(all, o);
       }, {});
     });
-    builder.addCase(createTag.fulfilled, (state, action) => {});
+    builder.addCase(createTag.fulfilled, (state, action) => {
+      const { id, name } = action.payload.data;
+      state.tags[id] = { name };
+    });
     builder.addCase(updateTag.fulfilled, (state, action) => {
       const { id, parentId, tagName: name } = action.payload.data;
       console.log(action.payload);
       Object.assign(state.tags[id], { parentId, name });
+    });
+    builder.addCase(deleteTag.fulfilled, (state, action) => {
+      const { id } = action.payload.data;
+      const { parentId, children } = state.tags[id];
+
+      state.tags[parentId].children = state.tags[parentId].children.filter(
+        (childId) => childId !== id
+      );
+      for (const id of children) {
+        delete state.tags[id];
+      }
+
+      delete state.tags[id];
     });
   },
 });
