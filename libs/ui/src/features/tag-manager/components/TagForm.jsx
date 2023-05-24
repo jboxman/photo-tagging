@@ -13,6 +13,8 @@ const saveValues = ({ parentId, tagName = '' } = {}) => ({
   tagName
 });
 
+// TODO - parentId is id if action is create, real parentId otherwise
+
 const TagForm = ({
   data,
   formType = '',
@@ -45,6 +47,7 @@ const TagForm = ({
             render={({ field }) => (
               <TextInput label="Tag" withAsterisk {...field} />
             )}
+            rules={{ required: true }}
           />
 
           <Controller

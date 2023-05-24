@@ -5,6 +5,8 @@ import { Button } from '@mantine/core';
 
 const TagForm = ({
   activeSelection = false,
+  canEdit = false,
+  canDelete = false,
   onCreateClick,
   onEditClick,
   onDeleteClick,
@@ -15,10 +17,10 @@ const TagForm = ({
         <Button compact onClick={onCreateClick}>
           Create
         </Button>
-        <Button compact onClick={onEditClick} disabled={!activeSelection}>
+        <Button compact onClick={onEditClick} disabled={!canEdit}>
           Edit
         </Button>
-        <Button compact onClick={onDeleteClick} disabled={!activeSelection}>
+        <Button compact onClick={onDeleteClick} disabled={!canDelete}>
           Delete
         </Button>
       </Button.Group>
@@ -26,3 +28,12 @@ const TagForm = ({
   );
 };
 export default TagForm;
+
+TagForm.propTypes = {
+  activeSelection: PropTypes.bool,
+  canEdit: PropTypes.bool,
+  canDelete: PropTypes.bool,
+  onDeleteClick: PropTypes.func,
+  onCreateClick: PropTypes.func,
+  onEditClick: PropTypes.func,
+};

@@ -11,7 +11,7 @@ import TagConfirm from './components/TagConfirm';
 import Tree from '../../components/tree';
 
 import { denormalizeTree } from '../../store/helpers';
-import { updateTag, deleteTag } from '../../store/tagActions';
+import { updateTag, deleteTag, createTag } from '../../store/tagActions';
 
 // Need to know selectedNode
 // Need to load initial data
@@ -52,16 +52,33 @@ const TagManager = ({ formProps = { type: formTypes.choice } }) => {
   };
 
   // TODO - contemplate failure
-  const handleSaveClick = (tag) => {
-    console.log(tag);
-    dispatch(updateTag({ ...tag, id: selectedNode?.databaseId })).then(() =>
+  const handleSaveClick = (formData) => {
+    console.log(FormData);
+    if (formType == formTypes.create) {
+      dispatch(createTag({ ...formData })).then(() =>
+        setFormType(formTypes.choice)
+      );
+    } else if (formType == formTypes.edit) {
+      dispatch(updateTag({ ...formData, id: selectedNode?.databaseId })).then(
+        () => setFormType(formTypes.choice)
+      );
+    }
+  };
+
+  const handleDeleteClick = () => {
+    // TODO - Need to reset selection
+    dispatch(deleteTag({ id: selectedNode?.databaseId })).then(() =>
       setFormType(formTypes.choice)
     );
   };
 
-  const handleDeleteClick = () => {
-    dispatch(deleteTag({ id: selectedNode?.databaseId })).then(() =>
-      setFormType(formTypes.choice)
+  const isEditable = () => !!selectedNode?.id;
+  const isDeletable = () => {
+    console.log(selectedNode);
+    return (
+      isEditable &&
+      selectedNode?.children?.length == 0 &&
+      selectedNode?.imageCount == 0
     );
   };
 
@@ -70,6 +87,8 @@ const TagManager = ({ formProps = { type: formTypes.choice } }) => {
       return (
         <TagActions
           activeSelection={!!selectedNode?.id}
+          canEdit={isEditable()}
+          canDelete={isDeletable()}
           onCreateClick={createHandleClick(formTypes.create)}
           onEditClick={createHandleClick(formTypes.edit)}
           onDeleteClick={createHandleClick(formTypes.delete)}
@@ -107,12 +126,7 @@ const TagManager = ({ formProps = { type: formTypes.choice } }) => {
                 formTypes.create,
                 formTypes.edit,
                 formTypes.delete
-              ].includes(formType),
-              onClick: (node) => {
-                node.isSelected ? node.deselect() : node.select();
-                node.activate();
-                console.log('hello');
-              }
+              ].includes(formType)
             }}
           />
         </Stack>

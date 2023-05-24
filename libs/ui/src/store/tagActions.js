@@ -10,24 +10,24 @@ export const loadTags = createAsyncThunk(
 
 export const createTag = createAsyncThunk(
   'tags/create',
-  async function (data, { extra: api }) {
-    const result = await api.createTag(data);
+  async function ({ tagName = '' } = {}, { extra: api }) {
+    const result = await api.createTag({ tagName });
     return result;
   }
 );
 
 export const updateTag = createAsyncThunk(
   'tags/update',
-  async function (data, { extra: api }) {
-    const result = await api.updateTag(data);
+  async function ({ tagName = '', parentId = null } = {}, { extra: api }) {
+    const result = await api.updateTag({ tagName, parentId });
     return result;
   }
 );
 
 export const deleteTag = createAsyncThunk(
   'tags/delete',
-  async function (data = {}, { extra: api }) {
-    const result = await api.deleteTag(data);
+  async function ({ id = 0 } = {}, { extra: api }) {
+    const result = await api.deleteTag({ id });
     return result;
   }
 );

@@ -15,7 +15,7 @@ export const denormalizeTree = (normalizedTree) => {
   const allTags = Object.values(normalizedTree)
     .filter((v) => v.parentId === null)
     .reduce(function me(accum, v) {
-      const { id, name, parentId } = v;
+      const { id, name, parentId, imageCount } = v;
       const allChildren = v.children
         .map((id) => normalizedTree[id])
         .reduce(me, []);
@@ -26,7 +26,8 @@ export const denormalizeTree = (normalizedTree) => {
           databaseId: id,
           parentId: String(parentId ?? ''),
           name,
-          children: allChildren
+          children: allChildren,
+          imageCount
         }
       ];
     }, []);

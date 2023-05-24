@@ -40,9 +40,12 @@ const tagsSlice = createSlice({
       const { id } = action.payload.data;
       const { parentId, children } = state.tags[id];
 
-      state.tags[parentId].children = state.tags[parentId].children.filter(
-        (childId) => childId !== id
-      );
+      if (parentId) {
+        state.tags[parentId].children = state.tags[parentId].children.filter(
+          (childId) => childId !== id
+        );
+      }
+
       for (const id of children) {
         delete state.tags[id];
       }
