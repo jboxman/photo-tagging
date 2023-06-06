@@ -10,16 +10,16 @@ export const loadTags = createAsyncThunk(
 
 export const createTag = createAsyncThunk(
   'tags/create',
-  async function ({ tagName = '' } = {}, { extra: api }) {
-    const result = await api.createTag({ tagName });
+  async function ({ tagName = '', parentId = null } = {}, { extra: api }) {
+    const result = await api.createTag(tagFactory({ tagName, parentId }));
     return result;
   }
 );
 
 export const updateTag = createAsyncThunk(
   'tags/update',
-  async function ({ tagName = '', parentId = null } = {}, { extra: api }) {
-    const result = await api.updateTag({ tagName, parentId });
+  async function ({ id, tagName = '', parentId = null } = {}, { extra: api }) {
+    const result = await api.updateTag(tagFactory({ id, tagName, parentId }));
     return result;
   }
 );
@@ -31,3 +31,22 @@ export const deleteTag = createAsyncThunk(
     return result;
   }
 );
+
+function tagFactory({
+  tagName = '',
+  id = Date.now(),
+  parentId = null,
+  children = [],
+  imageCount = 0,
+} = {}) {
+  id = Number(id);
+  parentId = Number(parentId);
+
+  return {
+    name: tagName,
+    id: Number.isNaN(id) ? null : id,
+    parentId: Number.isNaN(parentId) ? null : parentId,
+    children,
+    imageCount,
+  };
+}

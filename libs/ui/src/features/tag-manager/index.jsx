@@ -1,5 +1,5 @@
 import React from 'react';
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 
@@ -17,6 +17,10 @@ import { updateTag, deleteTag, createTag } from '../../store/tagActions';
 // Need to load initial data
 // Need to support create/edit/delete
 
+// TODO -
+// Convert strings to numbers leaving form
+// What else?
+
 const formTypes = {
   choice: 'choice',
   create: 'create',
@@ -25,12 +29,14 @@ const formTypes = {
 };
 
 const TagManager = ({ formProps = { type: formTypes.choice } }) => {
+  const dispatch = useDispatch();
+  const treeRef = useRef();
+
   const [selectedNode, setSelectedNode] = useState({});
+  //const [scrollToId, setScrollToId] = useState(null);
   const [formType, setFormType] = useState(formProps.type);
 
   const data = useSelector((state) => state.tags.tags);
-
-  const dispatch = useDispatch();
 
   // Soft disable because there's no disable prop for TreeView
   const handleNodeSelection = (n) => {
@@ -53,23 +59,28 @@ const TagManager = ({ formProps = { type: formTypes.choice } }) => {
 
   // TODO - contemplate failure
   const handleSaveClick = (formData) => {
-    console.log(FormData);
+    console.log(formData);
     if (formType == formTypes.create) {
-      dispatch(createTag({ ...formData })).then(() =>
-        setFormType(formTypes.choice)
-      );
+      dispatch(createTag({ ...formData })).then(() => {
+        setFormType(formTypes.choice);
+        // TODO - setState and useEffect instead?
+        treeRef.current.scrollTo(selectedNode?.treeId);
+        treeRef.current.select(selectedNode?.treeId);
+      });
     } else if (formType == formTypes.edit) {
-      dispatch(updateTag({ ...formData, id: selectedNode?.databaseId })).then(
-        () => setFormType(formTypes.choice)
+      dispatch(updateTag({ ...formData, id: selectedNode?.id })).then(() =>
+        setFormType(formTypes.choice)
       );
     }
   };
 
   const handleDeleteClick = () => {
-    // TODO - Need to reset selection
-    dispatch(deleteTag({ id: selectedNode?.databaseId })).then(() =>
-      setFormType(formTypes.choice)
-    );
+    dispatch(deleteTag({ id: selectedNode?.id })).then(() => {
+      //treeRef.current.deselect(selectedNode?.id);
+      // TODO - batching?
+      setSelectedNode({});
+      setFormType(formTypes.choice);
+    });
   };
 
   const isEditable = () => !!selectedNode?.id;
@@ -114,11 +125,14 @@ const TagManager = ({ formProps = { type: formTypes.choice } }) => {
     );
   };
 
+  // TODO - need to pass moveTo node so that imperative API can be used
+  // to move tree focus to newly created node? This _might_ work.
   return (
     <>
       <Flex gap="md" justify="center" align="flex-start">
         <Stack justify="flex-start">
           <Tree
+            treeRef={treeRef}
             data={denormalizeTree(data)}
             onNodeSelect={handleNodeSelection}
             renderRowProps={{

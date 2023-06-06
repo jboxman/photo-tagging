@@ -8,8 +8,8 @@ import { getSelectListItems } from '../../../store/helpers';
 const upperFirst = (str) =>
   `${str.slice(0, 1).toLocaleUpperCase()}${str.slice(1)}`;
 
-const saveValues = ({ parentId, tagName = '' } = {}) => ({
-  parentId,
+const saveValues = ({ parentId = undefined, tagName = '' } = {}) => ({
+  parentId: Number(parentId),
   tagName
 });
 
@@ -25,13 +25,15 @@ const TagForm = ({
   const { name: tagName, parentId } = activeItem;
 
   // TODO - add validation
+  // TODO - cannot create/update tag w/ tagName && parentId == existing
   const { control, handleSubmit } = useForm({
     defaultValues: {
       tagName: tagName ?? '',
-      parentId: parentId ?? ''
+      parentId: String(parentId) ?? ''
     }
   });
 
+  // TODO - Need IDs to be integer values
   const onSubmit = (values) => {
     console.log(values);
     onSaveClick(saveValues(values));

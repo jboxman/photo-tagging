@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Tree as Arborist } from 'react-arborist';
 import { Text, Paper } from '@mantine/core';
 
@@ -7,14 +7,20 @@ import styles from './styles.module.css';
 
 export default function Tree({
   data = [],
+  scrollToId = null,
+  treeRef = null,
   renderRow = DefaultRow,
   renderRowProps = { selectBehavior: () => {}, disableSelect: false },
   onNodeSelect = () => {},
 }) {
+  const ref = treeRef || useRef();
+  console.log(data);
   return (
     <Paper shadow="xs" radius="xs" p="xs">
       {!data.length <= 0 ? (
         <Arborist
+          idAccessor="treeId"
+          ref={ref}
           paddingTop={10}
           paddingBottom={10}
           data={data}

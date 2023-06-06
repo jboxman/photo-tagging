@@ -4,13 +4,14 @@ export const normalize = (obj) => {
     {
       [obj.id]: {
         ...obj,
-        children: obj.children.map((v) => v.id)
-      }
+        children: obj.children.map((v) => v.id),
+      },
     },
     ...obj.children.map(normalize)
   );
 };
 
+// TODO - Maybe set the rest of the values as an object with their original values?
 export const denormalizeTree = (normalizedTree) => {
   const allTags = Object.values(normalizedTree)
     .filter((v) => v.parentId === null)
@@ -22,13 +23,13 @@ export const denormalizeTree = (normalizedTree) => {
       return [
         ...accum,
         {
-          id: `${id}${parentId ? ['-', parentId].join('') : ''}`,
-          databaseId: id,
-          parentId: String(parentId ?? ''),
+          treeId: `${id}${parentId ? ['-', parentId].join('') : ''}`,
+          id,
+          parentId,
           name,
           children: allChildren,
-          imageCount
-        }
+          imageCount,
+        },
       ];
     }, []);
   return allTags;
@@ -37,13 +38,13 @@ export const denormalizeTree = (normalizedTree) => {
 export const getSelectListItems = ({
   tags: normalizedTags,
   idName = 'value',
-  labelName = 'label'
+  labelName = 'label',
 }) => {
   const tagCrumbs = [
     {
       [idName]: '',
-      [labelName]: 'None'
-    }
+      [labelName]: 'None',
+    },
   ];
 
   function getParent({ parentId, name }) {
@@ -51,9 +52,9 @@ export const getSelectListItems = ({
       return [
         ...getParent({
           name: normalizedTags[parentId].name,
-          parentId: normalizedTags[parentId].parentId
+          parentId: normalizedTags[parentId].parentId,
         }),
-        normalizedTags[parentId].name
+        normalizedTags[parentId].name,
       ];
     }
     return [];
@@ -62,7 +63,7 @@ export const getSelectListItems = ({
   for (const tag of Object.values(normalizedTags)) {
     tagCrumbs.push({
       [idName]: String(tag.id),
-      [labelName]: [...getParent(tag), tag.name].join(' > ')
+      [labelName]: [...getParent(tag), tag.name].join(' > '),
     });
   }
 

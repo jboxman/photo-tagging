@@ -26,14 +26,20 @@ const tagsSlice = createSlice({
     });
 
     builder.addCase(createTag.fulfilled, (state, action) => {
-      const { id, name } = action.payload.data;
-      state.tags[id] = { name };
+      const { id, parentId, ...rest } = action.payload.data;
+      console.log(action.payload.data);
+      if (parentId) {
+        state.tags[parentId].children.push(id);
+      }
+      state.tags[id] = { id, parentId, ...rest };
+      console.log(current(state.tags));
     });
 
+    // TODO - a move of parentId means updating each parent as well
     builder.addCase(updateTag.fulfilled, (state, action) => {
-      const { id, parentId, tagName: name } = action.payload.data;
+      const { id, parentId, name } = action.payload.data;
       console.log(action.payload);
-      Object.assign(state.tags[id], { parentId, name });
+      Object.assign(state.tags[id], { ...state.tags[id], parentId, name });
     });
 
     builder.addCase(deleteTag.fulfilled, (state, action) => {

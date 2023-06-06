@@ -1,11 +1,3 @@
-function tagFactory({ tagName = '', id = Date.now(), parentId = 0 } = {}) {
-  return {
-    tagName,
-    id,
-    parentId: parentId == 0 ? undefined : parentId
-  };
-}
-
 export async function loadAllTags() {
   // https://dev.to/thatamymac/dynamic-imports-of-json-ipl
   const data = await import('../../fixtures/tags.json').then(
@@ -19,14 +11,15 @@ export async function loadAllTags() {
 
 export async function createTag(data = {}) {
   return {
-    data: tagFactory(data),
+    data: data,
     success: true
   };
 }
 
 export async function updateTag(data = {}) {
+  console.log(data);
   return {
-    data,
+    data: data,
     success: true
   };
 }
