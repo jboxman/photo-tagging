@@ -13,9 +13,18 @@ async function main() {
   // Includes up to 4 levels
   // Because Prisma does not currently support `WITH` queries
   const allTags = await prisma.tags.findMany({
+    /*
     where: {
       parentId: null,
     },
+    */
+    include: {
+      children: true,
+      _count: {
+        select: { images: true },
+      },
+    },
+    /*
     include: {
       children: {
         include: {
@@ -23,6 +32,7 @@ async function main() {
         },
       },
     },
+    */
   });
 
   console.log(JSON.stringify(allTags, null, 2));
